@@ -30,7 +30,6 @@ async def parse_repository(input: RepoInput):
         root_node = tree.root_node
         information = await build_ast(root_node)
         all_information.append(information)
-        print_ast(information)
 
     neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
     for information in all_information:
@@ -39,4 +38,23 @@ async def parse_repository(input: RepoInput):
 
     delete_repo(dest_path)
 
-    return {"status": "success", "ast_nodes": [repr(info) for info in all_information]}
+    return {"status": "success"}
+
+@app.post("/get-children-texts/")
+def get_children_texts(identifier_name: str):
+    neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
+    children_texts = neo4j_store.get_children_text(identifier_name)
+    neo4j_store.close()
+
+    if not children_texts:
+        raise HTTPException(status_code=404, detail="No children found for the given identifier name")
+    
+    return {"identifier_name": identifier_name, "children_texts": children_texts}
+
+@app.get("/list-identifiers/")
+def list_identifiers():
+    neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
+    identifiers = neo4j_store.list_identifiers()
+    neo4j_store.close()
+
+    return {"identifiers": identifiers}

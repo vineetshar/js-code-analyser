@@ -1,5 +1,3 @@
-# neo4j_store.py
-
 from neo4j import GraphDatabase
 
 class Neo4jASTStore:
@@ -36,3 +34,31 @@ class Neo4jASTStore:
 
         for child in node.children:
             self._store_node_recursive(session, child, node_id)
+
+    def get_children_text(self, identifier_name):
+        with self.driver.session() as session:
+            result = session.read_transaction(self._find_children_texts, identifier_name)
+            return [record["parent_text"] for record in result]
+
+    def list_identifiers(self):
+        with self.driver.session() as session:
+            result = session.read_transaction(self._list_identifiers)
+            return [record["identifier"] for record in result]
+
+    @staticmethod
+    def _find_children_texts(tx, identifier_name):
+        query = (
+            "MATCH (n:ASTNode {text: $identifier_name})<-[:HAS_CHILD]-(parent:ASTNode) "
+            "RETURN parent.text AS parent_text"
+        )
+        result = tx.run(query, identifier_name=identifier_name)
+        return [record for record in result]
+
+    @staticmethod
+    def _list_identifiers(tx):
+        query = (
+            "MATCH (n:ASTNode {type: 'identifier'}) "
+            "RETURN n.text AS identifier"
+        )
+        result = tx.run(query)
+        return [record for record in result]
