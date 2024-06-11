@@ -19,3 +19,11 @@
 6. curl -X 'POST' \  'http://127.0.0.1:8000/get-children-texts/?identifier_name=NameHere' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json'
+
+
+## Screenshots
+
+![Screenshot 1](screenshots/parserepo.png)
+![Screenshot 2](screenshots/getIdentifiers.png)
+![Screenshot 3](screenshots/neo4jvisual.png)
+![Screenshot 4](screenshots/codeGraph.png)
