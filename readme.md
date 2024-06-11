@@ -1,6 +1,6 @@
 1. docker-compose up
 
-2. create new virtual env, activate it
+2. create new virtual env, activate it , copy .env.sample as .env for neo4j connection creds
 
 3. install items from requirements.txt
 
