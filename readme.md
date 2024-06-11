@@ -2,7 +2,7 @@
 
 2. create new virtual env, activate it , copy .env.sample as .env for neo4j connection creds
 
-3. install items from requirements.txt
+3. install items from requirements.txt, pip install -r requirements.txt
 
 4. uvicorn main:app --reload
 
