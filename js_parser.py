@@ -30,16 +30,9 @@ async def build_ast(node):
     return ast_node
 
 def parse_code(code):
-    # Load the pre-built Tree-sitter JavaScript language
     JS_LANGUAGE = Language(JavaScript.language())
     parser = Parser()
     parser.set_language(JS_LANGUAGE)
     tree = parser.parse(bytes(code, 'utf8'))
 
     return tree
-
-def print_ast(node, level=0):
-    indent = ' ' * (level * 2)
-    print(f"{indent}{node}")
-    for child in node.children:
-        print_ast(child, level + 1)

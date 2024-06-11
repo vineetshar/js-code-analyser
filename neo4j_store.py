@@ -1,7 +1,14 @@
 from neo4j import GraphDatabase
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 class Neo4jASTStore:
-    def __init__(self, uri, user, password):
+    def __init__(self):
+        uri = os.getenv("NEO4J_URI")
+        user = os.getenv("NEO4J_USER")
+        password = os.getenv("NEO4J_PASSWORD")
+        self.driver = GraphDatabase.driver(uri, auth=(user, password))
         self.driver = GraphDatabase.driver(uri, auth=(user, password))
 
     def close(self):

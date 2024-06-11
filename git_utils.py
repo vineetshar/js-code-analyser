@@ -5,7 +5,7 @@ from fastapi import HTTPException
 
 def clone_repo(repo_url: str, dest: str) -> None:
     try:
-        os.makedirs(dest)  # Ensure the destination directory exists
+        os.makedirs(dest)
         clone_repository(repo_url, dest)
     except GitError as e:
         raise HTTPException(status_code=400, detail=f"Error cloning repository: {e}")

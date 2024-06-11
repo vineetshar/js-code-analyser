@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from neo4j_store import Neo4jASTStore
-from js_parser import parse_code, build_ast, print_ast
+from js_parser import parse_code, build_ast
 from git_utils import clone_repo, delete_repo, get_js_files
 
 app = FastAPI()
@@ -31,7 +31,7 @@ async def parse_repository(input: RepoInput):
         information = await build_ast(root_node)
         all_information.append(information)
 
-    neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
+    neo4j_store = Neo4jASTStore()
     for information in all_information:
         neo4j_store.store_ast(information)
     neo4j_store.close()
@@ -42,7 +42,7 @@ async def parse_repository(input: RepoInput):
 
 @app.post("/get-children-texts/")
 def get_children_texts(identifier_name: str):
-    neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
+    neo4j_store = Neo4jASTStore()
     children_texts = neo4j_store.get_children_text(identifier_name)
     neo4j_store.close()
 
@@ -53,7 +53,7 @@ def get_children_texts(identifier_name: str):
 
 @app.get("/list-identifiers/")
 def list_identifiers():
-    neo4j_store = Neo4jASTStore("bolt://localhost:7687", "neo4j", "password")
+    neo4j_store = Neo4jASTStore()
     identifiers = neo4j_store.list_identifiers()
     neo4j_store.close()
 

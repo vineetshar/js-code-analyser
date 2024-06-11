@@ -16,6 +16,6 @@
 
 5. List the identifiers curl -X GET http://127.0.0.1:8000/list-identifiers/
 
-6. curl -X 'POST' \  'http://127.0.0.1:8000/get-children-texts/?identifier_name='NameHere'' \
+6. curl -X 'POST' \  'http://127.0.0.1:8000/get-children-texts/?identifier_name=NameHere' \
   -H 'accept: application/json' \
   -H 'Content-Type: application/json'
