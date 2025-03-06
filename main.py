@@ -58,3 +58,8 @@ def list_identifiers():
     neo4j_store.close()
 
     return {"identifiers": identifiers}
+
+@app.get("/health")
+def helloWorld():
+    return "Hello World"
+
